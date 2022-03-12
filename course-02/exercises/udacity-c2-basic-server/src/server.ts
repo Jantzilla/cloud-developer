@@ -105,6 +105,23 @@ import { Car, cars as cars_list } from './cars';
 
   /// @TODO Add an endpoint to post a new car to our list
   // it should require id, type, model, and cost
+  app.post( "/cars", 
+    async ( req: Request, res: Response ) => {
+
+      let { make, type, model, cost, id } = req.body
+
+      if ( !id || !type || !model || !cost ) {
+        return res.status(400).send(`make, type, model, cost, id are required`);
+      }
+
+      const new_car: Car = {
+        make: make, type: type, model: model, cost: cost, id: id
+      };
+
+      cars.push(new_car)
+
+      return res.status(201).send(new_car);
+  } );
 
   // Start the Server
   app.listen( port, () => {
