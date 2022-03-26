@@ -20,10 +20,14 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
       // check url is valid
       if (!image_url) {
-          return res.status(400).send({ message: 'Image url is invalid.' });
+          return res.status(400).send({ message: 'Missing Image URL' });
       }
 
       try {
+        if ( typeof image_url !== "string" ) {
+          res.status(500).json({ error: 'Image URL is invalid.' });
+          return;
+        }
         const filtered_path = await filterImageFromURL(image_url);
         res.status(200).sendFile(filtered_path);
         res.on('finish', () => deleteLocalFiles([filtered_path]));
