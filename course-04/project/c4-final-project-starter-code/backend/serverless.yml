@@ -131,6 +131,11 @@ functions:
       - http:
           method: post
           path: todos/{todoId}/attachment
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+        - s3:PutObject
+        Resource: "arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*"
 
 resources:
   Resources:
