@@ -5,7 +5,6 @@ import { cors } from 'middy/middlewares'
 import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
 import { getUserId } from '../utils';
 import { createTodo } from '../../helpers/todos'
-import { createAttachmentPresignedUrl } from '../../helpers/todos'
 
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -13,15 +12,12 @@ export const handler = middy(
 
     // TODO: Implement creating a new TODO item
 
-    const newItem = await createTodo(newTodo, getUserId(event))
-
-    const url = createAttachmentPresignedUrl(newItem.todoId)
+    const item = await createTodo(newTodo, getUserId(event))
 
     return {
       statusCode: 201,
       body: JSON.stringify({
-        newItem: newItem,
-        uploadUrl: url
+        item: item
       })
     }
 })
